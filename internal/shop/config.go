@@ -446,7 +446,7 @@ func ReadConfig(ctx context.Context, fileName string, allowFallback bool) (*Conf
 
 	if len(config.AdditionalConfigs) > 0 {
 		for _, additionalConfigFile := range config.AdditionalConfigs {
-			additionalConfig, err := ReadConfig(ctx, additionalConfigFile, allowFallback)
+			additionalConfig, err := ReadConfig(ctx, additionalConfigFile, false)
 			if err != nil {
 				return nil, fmt.Errorf("error while reading included config: %s", err.Error())
 			}

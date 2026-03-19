@@ -46,6 +46,27 @@ include:
 	assert.NoError(t, os.RemoveAll(tmpDir))
 }
 
+func TestReadConfig_IncludedFileError(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	t.Chdir(tmpDir)
+
+	stagingConfig := []byte(`
+url: https://xyz.nuonic.dev
+include:
+  - base.yml
+`)
+
+	stagingFilePath := filepath.Join(tmpDir, "staging.yml")
+
+	assert.NoError(t, os.WriteFile(stagingFilePath, stagingConfig, 0644))
+
+	_, err := ReadConfig(t.Context(), stagingFilePath, true)
+	assert.NotNil(t, err)
+
+	assert.NoError(t, os.RemoveAll(tmpDir))
+}
+
 func TestReadConfigCompatibilityDateValidation(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, ".shopware-project.yml")
